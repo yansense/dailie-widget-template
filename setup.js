@@ -16,6 +16,17 @@ window.addEventListener("message", (event) => {
     );
   };
 
+  const sendError = (error) => {
+    window.postMessage(
+      {
+        id: data.id,
+        type: "ERROR",
+        error,
+      },
+      "*"
+    );
+  };
+
   switch (data.type) {
     case "GET_CONTEXT":
       setTimeout(() => {
@@ -27,30 +38,53 @@ window.addEventListener("message", (event) => {
       }, 500);
       break;
 
-    case "GET_STORAGE":
-      const storedValue = localStorage.getItem(`widget_storage_${data.payload.key}`);
-      sendResponse(storedValue ? JSON.parse(storedValue) : undefined);
+    case "INVOKE_METHOD": {
+      const { module, method, args } = data.payload;
+      
+      // Handle nested modules (e.g. module="storage.local")
+      if (module.startsWith("storage")) {
+        // Determine storage type
+        const type = module.includes("session") ? "session" : "local";
+        const keyPrefix = `mock_${type}_`;
+        
+        if (method === "getItem") {
+          const val = localStorage.getItem(keyPrefix + args[0]);
+          sendResponse(val ? JSON.parse(val) : undefined);
+        } else if (method === "setItem") {
+          localStorage.setItem(keyPrefix + args[0], JSON.stringify(args[1]));
+          sendResponse();
+        } else if (method === "removeItem") {
+          localStorage.removeItem(keyPrefix + args[0]);
+          sendResponse();
+        }
+      } else if (module === "ui") {
+        if (method === "alert") {
+          alert("[Mock Alert] " + args[0]);
+          sendResponse();
+        } else if (method === "confirm") {
+          const result = confirm("[Mock Confirm] " + args[0]);
+          sendResponse(result);
+        }
+      } else if (module === "ui.toast") {
+        console.log(`[Mock Toast] [${method}]`, args[0]);
+        sendResponse();
+      } else if (module === "network") {
+         // Mock network
+         console.log("[Mock Network]", method, args);
+         sendResponse({});
+      } else {
+        sendError("Module not found: " + module);
+      }
       break;
-
-    case "SET_STORAGE":
-      localStorage.setItem(
-        `widget_storage_${data.payload.key}`,
-        JSON.stringify(data.payload.value)
-      );
-      sendResponse(true);
-      break;
+    }
 
     case "REQUEST":
+      // Legacy
       console.log("[Host Mock] Requesting:", data.payload.url);
       fetch(data.payload.url, data.payload.options)
         .then((res) => res.json())
         .then((json) => sendResponse(json))
-        .catch((err) =>
-          window.postMessage(
-            { id: data.id, type: "ERROR", error: err.message },
-            "*"
-          )
-        );
+        .catch((err) => sendError(err.message));
       break;
   }
 });
