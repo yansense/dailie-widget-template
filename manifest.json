@@ -1,0 +1,8 @@
+{
+  "name": "example-widget",
+  "version": "1.0.0",
+  "description": "A simple counter widget",
+  "entry": "src/index.tsx",
+  "permissions": ["storage"],
+  "sizes": ["small", "medium", "large"]
+}
