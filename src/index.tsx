@@ -1,5 +1,6 @@
 import { useWidgetContext, widget } from "dailie-widget-sdk";
 import { useEffect, useState } from "react";
+import { Test } from "./Test";
 
 const Widget = () => {
   const { context, loading: contextLoading } = useWidgetContext();
@@ -40,7 +41,7 @@ const Widget = () => {
   return (
     <div className="p-4 border rounded-lg shadow-sm bg-white dark:bg-gray-800 dark:text-white">
       <h1 className="text-xl font-bold mb-2">Nested Modules Widget</h1>
-
+      <Test />
       <div className="mb-4 text-sm text-gray-500">
         <p>Theme: {context?.theme}</p>
         <p>Size: {context?.dimensions.width}x{context?.dimensions.height}</p>
