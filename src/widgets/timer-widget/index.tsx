@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useWidgetContext, ui } from "dailie-widget-sdk";
 import { Play, Pause, RotateCcw } from "lucide-react";
 
