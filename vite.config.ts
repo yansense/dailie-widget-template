@@ -7,7 +7,7 @@ import { defineConfig } from "vite";
 function getWidgetEntries() {
   const targetWidget = process.env.TARGET_WIDGET;
   const widgetsDir = path.resolve(__dirname, "src/widgets");
-  
+
   // If TARGET_WIDGET is specified, only build that one
   if (targetWidget) {
     const entryPath = path.join(widgetsDir, targetWidget, "index.tsx");
@@ -50,7 +50,7 @@ export default defineConfig({
       formats: ["es"], // 推荐输出 ES Module
     },
     rollupOptions: {
-      external: ["react", "react-dom", "react/jsx-runtime"],
+      external: ["react", "react-dom", "react/jsx-runtime", "dailie-widget-sdk"],
       output: {
         entryFileNames: "[name].es.js",
         globals: {
