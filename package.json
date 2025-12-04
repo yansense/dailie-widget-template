@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "concurrently \"pnpm:watch\" \"pnpm:preview\"",
-    "build": "tsc -b && node scripts/build.js",
+    "build": "node scripts/build.js",
     "watch": "node scripts/watch.js",
     "preview": "vite preview",
     "lint": "biome lint",
