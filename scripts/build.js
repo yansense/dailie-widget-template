@@ -97,7 +97,9 @@ async function buildAll() {
   // Clean full dist when building all widgets
   if (fs.existsSync(distDir)) {
     console.log("[build] Cleaning dist directory...");
-    fs.rmSync(distDir, { recursive: true, force: true });
+    fs.readdirSync(distDir).forEach(f => fs.rmSync(path.join(distDir, f), { recursive: true, force: true }));
+  } else {
+    fs.mkdirSync(distDir, { recursive: true });
   }
 
   for (const widget of widgets) {

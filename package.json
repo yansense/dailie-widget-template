@@ -5,7 +5,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"pnpm:watch\" \"pnpm:preview\"",
+    "dev": "mkdir -p dist && concurrently \"pnpm:watch\" \"pnpm:preview\"",
     "build": "node scripts/build.js \"$npm_config_component\"",
     "watch": "node scripts/watch.js",
     "preview": "vite preview",
@@ -15,7 +15,7 @@
     "check": "biome check --write"
   },
   "dependencies": {
-    "dailie-widget-sdk": "git+https://github.com/yansense/dailie-widget-sdk.git#0.0.1",
+    "dailie-widget-sdk": "git+https://github.com/yansense/dailie-widget-sdk.git#v0.0.10",
     "lucide-react": "^0.555.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
