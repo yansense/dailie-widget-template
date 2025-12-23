@@ -45,14 +45,15 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      'dailie-widget-sdk': path.resolve(__dirname, '../dailie-widget-sdk/dist/widget.es.js'),
+      'dailie-widget-sdk': path.resolve(__dirname, '../dailie-widget-sdk/dist/sdk.es.js'),
     },
   },
   build: {
     // 1. 库模式打包
     lib: {
       entry: getWidgetEntries(),
-      formats: ["es"], // 推荐输出 ES Module
+      formats: ["iife"], // V2: Strict isolation requires IIFE
+      name: "DailieWidget", // Global variable name for the widget definition
     },
     rollupOptions: {
       // SDK Bundling Strategy:
@@ -65,14 +66,16 @@ export default defineConfig({
           ? ["react", "react-dom", "react/jsx-runtime"] // SDK NOT in external = bundled
           : ["react", "react-dom", "react/jsx-runtime", "dailie-widget-sdk"], // SDK in external = not bundled
       output: {
-        entryFileNames: "[name].es.js",
+        entryFileNames: "[name].js",
         globals: {
           react: "React",
           "react-dom": "ReactDOM",
+          "react/jsx-runtime": "ReactJSX",
+          "dailie-widget-sdk": "DailieWidgetSDK",
         },
       },
     },
-    minify: true,
+    minify: false,
     emptyOutDir: false,
   },
   define: {

@@ -37,6 +37,7 @@ function TestWidget() {
   const handleToast = (type: "success" | "error" | "info" | "warning") => {
     switch (type) {
       case "success":
+        console.log("[TestWidget] Invoking ui.toast.success");
         ui.toast.success("Operation successful!");
         break;
       case "error":
@@ -264,7 +265,12 @@ function TestWidget() {
 }
 
 export default defineWidget({
-  component: TestWidget,
+  id: "test.widget",
+  version: "1.0.0",
+  meta: {
+    title: "SDK Tester",
+    description: "A widget to test SDK capabilities",
+  },
   config: {
     props: {
       type: "object",
@@ -288,5 +294,8 @@ export default defineWidget({
         },
       ],
     },
+  },
+  setup() {
+    return () => <TestWidget />;
   },
 });
