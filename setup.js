@@ -12,7 +12,7 @@ window.addEventListener("message", (event) => {
         type: "RESPONSE",
         payload,
       },
-      "*"
+      "*",
     );
   };
 
@@ -23,7 +23,7 @@ window.addEventListener("message", (event) => {
         type: "ERROR",
         error,
       },
-      "*"
+      "*",
     );
   };
 
@@ -40,13 +40,13 @@ window.addEventListener("message", (event) => {
 
     case "INVOKE_METHOD": {
       const { module, method, args } = data.payload;
-      
+
       // Handle nested modules (e.g. module="storage.local")
       if (module.startsWith("storage")) {
         // Determine storage type
         const type = module.includes("session") ? "session" : "local";
         const keyPrefix = `mock_${type}_`;
-        
+
         if (method === "getItem") {
           const val = localStorage.getItem(keyPrefix + args[0]);
           sendResponse(val ? JSON.parse(val) : undefined);
@@ -69,9 +69,9 @@ window.addEventListener("message", (event) => {
         console.log(`[Mock Toast] [${method}]`, args[0]);
         sendResponse();
       } else if (module === "network") {
-         // Mock network
-         console.log("[Mock Network]", method, args);
-         sendResponse({});
+        // Mock network
+        console.log("[Mock Network]", method, args);
+        sendResponse({});
       } else {
         sendError("Module not found: " + module);
       }

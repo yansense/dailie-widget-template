@@ -43,6 +43,11 @@ function getWidgetEntries() {
 
 export default defineConfig({
   plugins: [react()],
+  resolve: {
+    alias: {
+      'dailie-widget-sdk': path.resolve(__dirname, '../dailie-widget-sdk/dist/widget.es.js'),
+    },
+  },
   build: {
     // 1. 库模式打包
     lib: {
@@ -57,8 +62,8 @@ export default defineConfig({
       //   This is the recommended approach for widgets used within the dailie platform
       external:
         process.env.BUNDLE_SDK === "true"
-          ? ["react", "react-dom", "react/jsx-runtime"]
-          : ["react", "react-dom", "react/jsx-runtime", "dailie-widget-sdk"],
+          ? ["react", "react-dom", "react/jsx-runtime"] // SDK NOT in external = bundled
+          : ["react", "react-dom", "react/jsx-runtime", "dailie-widget-sdk"], // SDK in external = not bundled
       output: {
         entryFileNames: "[name].es.js",
         globals: {

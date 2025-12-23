@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       dailie-widget-sdk:
-        specifier: git+https://github.com/yansense/dailie-widget-sdk.git#v0.0.10
-        version: https://codeload.github.com/yansense/dailie-widget-sdk/tar.gz/a0997200772392c1594d8516f7887acfab509dc9
+        specifier: file:../dailie-widget-sdk
+        version: file:../dailie-widget-sdk
       lucide-react:
         specifier: ^0.555.0
         version: 0.555.0(react@19.2.0)
@@ -402,9 +402,8 @@ packages:
   csstype@3.2.3:
     resolution: {integrity: sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ==}
 
-  dailie-widget-sdk@https://codeload.github.com/yansense/dailie-widget-sdk/tar.gz/a0997200772392c1594d8516f7887acfab509dc9:
-    resolution: {tarball: https://codeload.github.com/yansense/dailie-widget-sdk/tar.gz/a0997200772392c1594d8516f7887acfab509dc9}
-    version: 0.0.10
+  dailie-widget-sdk@file:../dailie-widget-sdk:
+    resolution: {directory: ../dailie-widget-sdk, type: directory}
 
   debug@4.4.3:
     resolution: {integrity: sha512-RGwwWnwQvkVfavKVt22FGLw+xYSdzARwm0ru6DhTVA3umU5hZc28V3kO4stgYryrTlLpuvgI9GiijltAjNbcqA==}
@@ -1069,7 +1068,7 @@ snapshots:
 
   csstype@3.2.3: {}
 
-  dailie-widget-sdk@https://codeload.github.com/yansense/dailie-widget-sdk/tar.gz/a0997200772392c1594d8516f7887acfab509dc9:
+  dailie-widget-sdk@file:../dailie-widget-sdk:
     dependencies:
       react: 19.2.0
       react-dom: 19.2.0(react@19.2.0)

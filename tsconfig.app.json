@@ -15,6 +15,12 @@
     "moduleDetection": "force",
     "noEmit": true,
     "jsx": "react-jsx",
+    
+    /* Path mapping for local SDK */
+    "baseUrl": ".",
+    "paths": {
+      "dailie-widget-sdk": ["../dailie-widget-sdk/src/index.tsx"]
+    },
 
     /* Linting */
     "strict": true,

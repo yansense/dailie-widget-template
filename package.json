@@ -15,7 +15,7 @@
     "check": "biome check --write"
   },
   "dependencies": {
-    "dailie-widget-sdk": "git+https://github.com/yansense/dailie-widget-sdk.git#v0.0.10",
+    "dailie-widget-sdk": "file:../dailie-widget-sdk",
     "lucide-react": "^0.555.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
