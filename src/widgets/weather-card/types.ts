@@ -36,4 +36,5 @@ export interface WeatherWidgetViewProps {
   loading: boolean;
   error: string | null;
   gridSize: string;
+  widgetStyle?: 'classic' | 'immersive';
 }

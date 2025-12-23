@@ -1,5 +1,5 @@
 import { useConfig, useWidgetContext } from "dailie-widget-sdk";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { fetchWeatherFromApi } from "./model";
 import type {
   WeatherConfig,
@@ -14,14 +14,19 @@ export const useWeather = (): WeatherWidgetViewProps => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Memoize config values to prevent unnecessary re-fetches
+  const location = useMemo(() => config?.location, [config?.location]);
+  const apiKey = useMemo(() => config?.apiKey, [config?.apiKey]);
+  const unit = useMemo(() => config?.unit, [config?.unit]);
+
   useEffect(() => {
     if (!context) return;
 
     // Derived config with defaults
     const activeConfig: WeatherConfig = {
-      location: config?.location || "Beijing",
-      apiKey: config?.apiKey || "",
-      unit: config?.unit || "metric",
+      location: location || "Beijing",
+      apiKey: apiKey || "",
+      unit: unit || "metric",
     };
 
     if (!activeConfig.apiKey) {
@@ -45,12 +50,13 @@ export const useWeather = (): WeatherWidgetViewProps => {
     fetchData();
     const interval = setInterval(fetchData, 10 * 60 * 1000); // 10 minutes
     return () => clearInterval(interval);
-  }, [context, config]);
+  }, [location, apiKey, unit]); // Only depend on memoized config values
 
   return {
     weatherData,
     loading: contextLoading || (!weatherData && loading),
     error: !config?.apiKey ? "API Key Required" : error,
     gridSize: context?.gridSize || "2x2",
+    widgetStyle: context?.widgetStyle,
   };
 };

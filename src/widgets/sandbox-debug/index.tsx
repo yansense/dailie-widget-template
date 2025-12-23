@@ -1,4 +1,4 @@
-import { defineWidget } from "dailie-widget-sdk";
+import { defineWidget, useWidgetContext } from "dailie-widget-sdk";
 import { WIDGET_CONFIG } from "./config";
 import { SandboxDebugView } from "./view";
 
@@ -11,6 +11,9 @@ export default defineWidget({
   },
   config: WIDGET_CONFIG,
   setup() {
-    return () => <SandboxDebugView />;
+    return () => {
+      const { context } = useWidgetContext();
+      return <SandboxDebugView widgetStyle={context.widgetStyle} />;
+    };
   },
 });

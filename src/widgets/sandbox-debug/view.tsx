@@ -13,7 +13,11 @@ interface DebugConfig {
   enableAutoLog?: boolean;
 }
 
-export function SandboxDebugView() {
+interface SandboxDebugViewProps {
+  widgetStyle?: 'classic' | 'immersive';
+}
+
+export function SandboxDebugView({ widgetStyle = 'classic' }: SandboxDebugViewProps) {
   const config = useConfig<DebugConfig>();
   const [crashTriggered, setCrashTriggered] = useState(false);
   const [_asyncCrashTriggered, setAsyncCrashTriggered] = useState(false);
@@ -93,8 +97,12 @@ export function SandboxDebugView() {
     throw new Error("[SandboxDebug] Sync crash: render phase error");
   }
 
+  const backgroundClass = widgetStyle === 'classic'
+    ? 'bg-gradient-to-br from-zinc-50 to-zinc-100 dark:from-zinc-900 dark:to-zinc-950'
+    : 'bg-transparent';
+
   return (
-    <div className="w-full h-full relative overflow-hidden select-none flex flex-col p-4 bg-gradient-to-br from-zinc-50 to-zinc-100 dark:from-zinc-900 dark:to-zinc-950 text-zinc-900 dark:text-zinc-100 font-sans">
+    <div className={`w-full h-full relative overflow-hidden select-none flex flex-col p-4 ${backgroundClass} text-zinc-900 dark:text-zinc-100 font-sans`}>
       {/* Decorative Background */}
       <div className="absolute -top-10 -right-10 w-32 h-32 bg-red-500/10 blur-3xl rounded-full pointer-events-none" />
 

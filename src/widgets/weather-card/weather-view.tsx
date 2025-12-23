@@ -15,11 +15,15 @@ export const WeatherView: React.FC<WeatherWidgetViewProps> = ({
   loading,
   error,
   gridSize,
+  widgetStyle = 'classic',
 }) => {
   // Loading State
   if (loading) {
+    const loadingBg = widgetStyle === 'classic'
+      ? 'bg-zinc-50 dark:bg-zinc-900'
+      : 'bg-transparent';
     return (
-      <div className="w-full h-full flex items-center justify-center bg-zinc-50 dark:bg-zinc-900">
+      <div className={`w-full h-full flex items-center justify-center ${loadingBg}`}>
         <div className="w-8 h-8 rounded-full border-2 border-zinc-300 border-t-zinc-500 animate-spin" />
       </div>
     );
@@ -27,8 +31,11 @@ export const WeatherView: React.FC<WeatherWidgetViewProps> = ({
 
   // Error / Empty State
   if (error || !weatherData) {
+    const errorBg = widgetStyle === 'classic'
+      ? 'bg-zinc-50 dark:bg-zinc-900'
+      : 'bg-transparent';
     return (
-      <div className="w-full h-full flex flex-col items-center justify-center bg-zinc-50 dark:bg-zinc-900 p-4 text-center">
+      <div className={`w-full h-full flex flex-col items-center justify-center ${errorBg} p-4 text-center`}>
         <AlertCircle
           className={`w-8 h-8 mb-2 ${error !== "API Key Required" ? "text-red-500" : "text-zinc-400"}`}
         />
@@ -77,9 +84,13 @@ export const WeatherView: React.FC<WeatherWidgetViewProps> = ({
   const isSmall = gridSize === "1x1";
   const isWide = gridSize === "2x1" || gridSize === "3x1";
 
-  // Base container styles
+  // Base container styles - background only in classic mode
+  const backgroundClass = widgetStyle === 'classic'
+    ? 'bg-gradient-to-br from-white to-zinc-100 dark:from-zinc-900 dark:to-zinc-950'
+    : 'bg-transparent';
+
   const containerClass =
-    "w-full h-full relative overflow-hidden select-none bg-gradient-to-br from-white to-zinc-100 dark:from-zinc-900 dark:to-zinc-950 text-zinc-800 dark:text-zinc-100 p-4 flex flex-col";
+    `w-full h-full relative overflow-hidden select-none ${backgroundClass} text-zinc-800 dark:text-zinc-100 p-4 flex flex-col`;
 
   // --- Layouts ---
 

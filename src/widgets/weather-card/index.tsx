@@ -12,13 +12,9 @@ export default defineWidget({
     description: "A simple weather widget",
   },
   config: WIDGET_CONFIG,
-  setup(context) {
+  setup() {
     return () => {
       const viewModel = useWeather();
-      // For testing scoped UI (V2 feature)
-      // Note: In V2, we should use `useWidgetScope().ui` instead of global `ui`.
-      // The global `ui` import will fail to target the correct widget in ShadowDOM mode.
-
       const { ui } = useWidgetScope();
 
       // Example usage

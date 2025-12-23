@@ -15,11 +15,24 @@ import {
   Settings,
   Trash2,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-function TestWidget() {
+interface TestWidgetProps {
+  widgetStyle?: 'classic' | 'immersive';
+}
+
+function TestWidget({ widgetStyle = 'classic' }: TestWidgetProps) {
   const { context } = useWidgetContext();
   const config = useConfig<{ apiKey: string }>();
+
+  // Debug: Log gridSize changes
+  useState(() => {
+    console.log('[TestWidget] Initial gridSize:', context?.gridSize);
+  });
+
+  useEffect(() => {
+    console.log('[TestWidget] gridSize changed to:', context?.gridSize);
+  }, [context?.gridSize]);
 
   // Storage Test
   const { value: count, setValue: setCount } = useStorage<number>(
@@ -78,8 +91,12 @@ function TestWidget() {
     }
   };
 
+  const backgroundClass = widgetStyle === 'classic'
+    ? 'bg-gradient-to-br from-white to-zinc-100 dark:from-zinc-900 dark:to-zinc-950'
+    : 'bg-transparent';
+
   return (
-    <div className="group w-full h-full relative overflow-hidden select-none flex flex-col p-4 bg-gradient-to-br from-white to-zinc-100 dark:from-zinc-900 dark:to-zinc-950 text-zinc-900 dark:text-zinc-100 font-sans">
+    <div className={`group w-full h-full relative overflow-hidden select-none flex flex-col p-4 ${backgroundClass} text-zinc-900 dark:text-zinc-100 font-sans`}>
       {/* Decorative Background */}
       <div className="absolute -top-10 -right-10 w-32 h-32 bg-indigo-500/10 blur-3xl rounded-full pointer-events-none" />
 
@@ -296,6 +313,9 @@ export default defineWidget({
     },
   },
   setup() {
-    return () => <TestWidget />;
+    return () => {
+      const { context } = useWidgetContext();
+      return <TestWidget widgetStyle={context.widgetStyle} />;
+    };
   },
 });
