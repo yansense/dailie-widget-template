@@ -12,7 +12,11 @@ async function buildWidget(widgetName) {
     const build = spawn("vite", ["build"], {
       stdio: "inherit",
       shell: true,
-      env: { ...process.env, TARGET_WIDGET: widgetName },
+      env: {
+        ...process.env,
+        TARGET_WIDGET: widgetName,
+        BUNDLE_SDK: process.env.BUNDLE_SDK || "false",
+      },
     });
 
     build.on("close", (code) => {
@@ -34,21 +38,27 @@ async function buildAll() {
   // Determine requested component (from argv or env)
   function getRequestedComponent() {
     // Check for --component=foo or -c=foo
-    const arg = process.argv.slice(2).find((a) => a.startsWith("--component=") || a.startsWith("-c="));
+    const arg = process.argv
+      .slice(2)
+      .find((a) => a.startsWith("--component=") || a.startsWith("-c="));
     if (arg) return arg.split(/=(.+)/)[1];
 
     // Check for separate flag form: --component foo
     const idx = process.argv.indexOf("--component");
-    if (idx !== -1 && process.argv.length > idx + 1) return process.argv[idx + 1];
+    if (idx !== -1 && process.argv.length > idx + 1)
+      return process.argv[idx + 1];
 
     const idx2 = process.argv.indexOf("-c");
-    if (idx2 !== -1 && process.argv.length > idx2 + 1) return process.argv[idx2 + 1];
+    if (idx2 !== -1 && process.argv.length > idx2 + 1)
+      return process.argv[idx2 + 1];
 
     // direct first arg (we pass "$npm_config_component" from package.json)
-    if (process.argv[2] && !process.argv[2].startsWith("-")) return process.argv[2];
+    if (process.argv[2] && !process.argv[2].startsWith("-"))
+      return process.argv[2];
 
     // npm config and env fallbacks
-    if (process.env.npm_config_component) return process.env.npm_config_component;
+    if (process.env.npm_config_component)
+      return process.env.npm_config_component;
     if (process.env.TARGET_WIDGET) return process.env.TARGET_WIDGET;
 
     return null;
@@ -65,13 +75,17 @@ async function buildAll() {
   if (requested) {
     // Build only the requested widget
     if (!widgets.includes(requested)) {
-      console.error(`[build] Widget '${requested}' not found. Available widgets: ${widgets.join(", ")}`);
+      console.error(
+        `[build] Widget '${requested}' not found. Available widgets: ${widgets.join(", ")}`,
+      );
       process.exit(1);
     }
 
     const indexPath = path.join(widgetsDir, requested, "index.tsx");
     if (!fs.existsSync(indexPath)) {
-      console.error(`[build] Widget '${requested}' does not contain index.tsx at ${indexPath}`);
+      console.error(
+        `[build] Widget '${requested}' does not contain index.tsx at ${indexPath}`,
+      );
       process.exit(1);
     }
 
@@ -97,7 +111,9 @@ async function buildAll() {
   // Clean full dist when building all widgets
   if (fs.existsSync(distDir)) {
     console.log("[build] Cleaning dist directory...");
-    fs.readdirSync(distDir).forEach(f => fs.rmSync(path.join(distDir, f), { recursive: true, force: true }));
+    fs.readdirSync(distDir).forEach((f) =>
+      fs.rmSync(path.join(distDir, f), { recursive: true, force: true }),
+    );
   } else {
     fs.mkdirSync(distDir, { recursive: true });
   }
@@ -113,7 +129,7 @@ async function buildAll() {
       }
     }
   }
-  
+
   console.log("[build] All widgets built successfully.");
 }
 

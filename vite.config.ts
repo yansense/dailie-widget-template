@@ -50,7 +50,15 @@ export default defineConfig({
       formats: ["es"], // 推荐输出 ES Module
     },
     rollupOptions: {
-      external: ["react", "react-dom", "react/jsx-runtime", "dailie-widget-sdk"],
+      // SDK Bundling Strategy:
+      // - When BUNDLE_SDK='true': SDK is bundled into the widget (for standalone distribution)
+      //   The web sandbox will detect this and skip SDK injection
+      // - When BUNDLE_SDK='false' (default): SDK is external, web sandbox will inject it
+      //   This is the recommended approach for widgets used within the dailie platform
+      external:
+        process.env.BUNDLE_SDK === "true"
+          ? ["react", "react-dom", "react/jsx-runtime"]
+          : ["react", "react-dom", "react/jsx-runtime", "dailie-widget-sdk"],
       output: {
         entryFileNames: "[name].es.js",
         globals: {

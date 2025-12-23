@@ -1,15 +1,13 @@
-
-
-import chokidar from "chokidar";
 import { spawn } from "node:child_process";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import chokidar from "chokidar";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const widgetsDir = path.resolve(__dirname, "../src/widgets");
 
-// Map to store active build processes (though we might just fire and forget for simple builds, 
-// but vite build --watch is long running. 
+// Map to store active build processes (though we might just fire and forget for simple builds,
+// but vite build --watch is long running.
 // Wait, the user wants single file bundles. `vite build --watch` might still try to code split if we run it on all.
 // But if we run `vite build --watch` with TARGET_WIDGET, it works for one.
 // We can't easily run multiple `vite build --watch` processes in parallel for many widgets without resource issues.
@@ -36,11 +34,11 @@ async function processQueue() {
   buildQueue.delete(widgetName);
 
   console.log(`[watch] Rebuilding ${widgetName}...`);
-  
+
   const build = spawn("vite", ["build"], {
     stdio: "inherit",
     shell: true,
-    env: { ...process.env, TARGET_WIDGET: widgetName },
+    env: { ...process.env, TARGET_WIDGET: widgetName, BUNDLE_SDK: "true" },
   });
 
   build.on("close", (code) => {
@@ -60,11 +58,12 @@ console.log("[watch] Running initial build...");
 const initialBuild = spawn("node", [path.join(__dirname, "build.js")], {
   stdio: "inherit",
   shell: true,
+  env: { ...process.env, BUNDLE_SDK: "true" },
 });
 
 initialBuild.on("close", () => {
   console.log("[watch] Initial build complete. Watching for changes...");
-  
+
   // Watch for changes
   const watcher = chokidar.watch(widgetsDir, {
     ignoreInitial: true,
@@ -77,22 +76,21 @@ initialBuild.on("close", () => {
     const widgetName = relative.split(path.sep)[0];
 
     if (widgetName && widgetName !== ".." && !widgetName.startsWith(".")) {
-       if (event === "unlinkDir" && relative === widgetName) {
-         // Widget directory removed
-         console.log(`[watch] Widget removed: ${widgetName}`);
-         const distFile = path.resolve(__dirname, `../dist/${widgetName}.es.js`);
-         import("node:fs").then((fs) => {
-            if (fs.existsSync(distFile)) {
-              fs.unlinkSync(distFile);
-              console.log(`[watch] Removed artifact: ${widgetName}.es.js`);
-            }
-         });
-       } else {
-         // Check if it's a valid widget directory (has index.tsx or we are adding it)
-         // We can just try to build it.
-         triggerBuild(widgetName);
-       }
+      if (event === "unlinkDir" && relative === widgetName) {
+        // Widget directory removed
+        console.log(`[watch] Widget removed: ${widgetName}`);
+        const distFile = path.resolve(__dirname, `../dist/${widgetName}.es.js`);
+        import("node:fs").then((fs) => {
+          if (fs.existsSync(distFile)) {
+            fs.unlinkSync(distFile);
+            console.log(`[watch] Removed artifact: ${widgetName}.es.js`);
+          }
+        });
+      } else {
+        // Check if it's a valid widget directory (has index.tsx or we are adding it)
+        // We can just try to build it.
+        triggerBuild(widgetName);
+      }
     }
   });
 });
-

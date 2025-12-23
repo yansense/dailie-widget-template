@@ -13,6 +13,35 @@ The React Compiler is enabled on this template. See [this documentation](https:/
 
 Note: This will impact Vite dev & build performances.
 
+## SDK Bundling
+
+This template supports optional bundling of the `dailie-widget-sdk` into your widget. By default, the SDK is kept external and will be injected by the web platform at runtime.
+
+### When to Bundle SDK
+
+- **Bundle SDK (`BUNDLE_SDK=true`)**: Use this when distributing widgets standalone or outside the dailie platform
+- **External SDK (default)**: Use this for widgets that will run within the dailie platform - the SDK will be automatically injected
+
+### How It Works
+
+The web sandbox automatically detects whether the SDK is bundled by checking for SDK imports in your widget code:
+- If SDK imports are found → SDK is injected by the platform
+- If no SDK imports are found → SDK is assumed to be bundled, no injection occurs
+
+### Building with Bundled SDK
+
+```bash
+# Build with SDK bundled
+BUNDLE_SDK=true npm run build
+
+# Build with SDK external (default)
+npm run build
+```
+
+### Development Mode
+
+During development (`npm run dev`), the SDK is always bundled to enable standalone preview.
+
 ## Expanding the ESLint configuration
 
 If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
