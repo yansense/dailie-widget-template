@@ -1,5 +1,5 @@
+import { MinusCircle, PlusCircle } from "lucide-react";
 import { useState } from "react";
-import { PlusCircle, MinusCircle } from "lucide-react";
 
 export default function Counter() {
   const [count, setCount] = useState(0);
