@@ -29,10 +29,11 @@ export default defineWidget({
     keywords: ['tag1', 'tag2']
   },
   config: {
-    // JSON Schema for Properties (forms)
-    props: { ... },
-    // Panel Layout (visual representation)
-    panel: { ... }
+    // Zod Schema for Configuration
+    schema: z.object({
+      apiKey: z.string(),
+      unit: z.enum(['metric', 'imperial']).default('metric')
+    })
   },
   setup: (context) => {
      // Initialization logic
