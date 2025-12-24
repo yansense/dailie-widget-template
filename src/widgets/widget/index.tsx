@@ -6,6 +6,7 @@ import {
   useWidgetContext,
   getSDKInfo,
 } from "dailie-widget-sdk";
+import { z } from "zod";
 import {
   AlertTriangle,
   CheckCircle,
@@ -289,28 +290,9 @@ export default defineWidget({
     description: "A widget to test SDK capabilities",
   },
   config: {
-    props: {
-      type: "object",
-      properties: {
-        apiKey: { type: "string", title: "API Key" },
-      },
-    },
-    panel: {
-      type: "Page",
-      children: [
-        {
-          type: "Section",
-          props: { title: "General" },
-          children: [
-            {
-              type: "Input",
-              props: { label: "API Key", type: "password" },
-              bind: "apiKey",
-            },
-          ],
-        },
-      ],
-    },
+    schema: z.object({
+      apiKey: z.string().describe("API Key"),
+    })
   },
   setup() {
     return () => {

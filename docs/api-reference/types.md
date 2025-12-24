@@ -34,8 +34,7 @@ interface WidgetDefinition {
     keywords?: string[];
   };
   config?: {
-    props?: Record<string, any>; // JSON Schema
-    panel?: Record<string, any>; // VDOM Layout
+    schema: z.ZodObject<any>;    // Zod schema for auto-UI generation
   };
   setup: (context: WidgetContext) => () => React.ReactNode;
 }

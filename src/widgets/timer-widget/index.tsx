@@ -1,4 +1,5 @@
 import { defineWidget, useConfig, useWidgetContext } from "dailie-widget-sdk";
+import { z } from "zod";
 import {
   CloudRain,
   CloudSun,
@@ -147,83 +148,14 @@ function WeatherWidget() {
 // --- 2. Widget Definition & Config Schema ---
 
 export default defineWidget({
-  component: WeatherWidget,
+  setup() {
+    return () => <WeatherWidget />;
+  },
   config: {
-    // A. Data Model
-    props: {
-      type: "object",
-      properties: {
-        city: {
-          type: "string",
-          title: "City Name",
-          default: "San Francisco",
-        },
-        apiKey: {
-          type: "string",
-          title: "Weather API Key",
-        },
-        unit: {
-          type: "string",
-          title: "Unit System",
-          enum: ["metric", "imperial"],
-          default: "metric",
-        },
-      },
-      required: ["city"],
-    },
-    // B. UI Layout (Whitelist Only)
-    panel: {
-      type: "Page",
-      children: [
-        {
-          type: "Section",
-          props: { title: "Location" },
-          children: [
-            {
-              type: "Input",
-              props: {
-                label: "City",
-                placeholder: "e.g. London",
-                type: "text",
-              },
-              bind: "city",
-            },
-            {
-              type: "Select",
-              props: {
-                label: "Units",
-                options: [
-                  { label: "Metric (°C)", value: "metric" },
-                  { label: "Imperial (°F)", value: "imperial" },
-                ],
-              },
-              bind: "unit",
-            },
-          ],
-        },
-        {
-          type: "Section",
-          props: { title: "Advanced" },
-          children: [
-            {
-              type: "Input",
-              props: {
-                label: "API Key (Optional)",
-                type: "password",
-                placeholder: "Paste key here...",
-              },
-              bind: "apiKey",
-            },
-            {
-              type: "Alert",
-              props: {
-                status: "info",
-                content: "If no API Key is provided, demo data will be shown.",
-              },
-            },
-          ],
-        },
-      ],
-    },
+    schema: z.object({
+      city: z.string().default("San Francisco").describe("City Name"),
+      apiKey: z.string().optional().describe("Weather API Key (Optional)"),
+      unit: z.enum(["metric", "imperial"]).default("metric").describe("Unit System"),
+    })
   },
 });

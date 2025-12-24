@@ -15,7 +15,7 @@ function defineWidget(definition: WidgetDefinition): void;
 | `id` | `string` | Unique identifier for your widget type (e.g., `weather-card`). |
 | `version` | `string` | Version of your widget (SemVer). |
 | `meta` | `object` | (Optional) Meta information like `title`, `description`, and `keywords`. |
-| `config` | `object` | (Optional) Defines the widget's configuration schema (`props`) and panel layout (`panel`). |
+| `config` | `object` | Defines the widget's configuration via a Zod `schema`. |
 | `setup` | `function` | Lifecycle function that receives `context` and returns the root component renderer. |
 
 ### The `setup` Function
