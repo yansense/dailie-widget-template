@@ -291,7 +291,24 @@ export default defineWidget({
   },
   config: {
     schema: z.object({
-      apiKey: z.string().describe("API Key"),
+      apiKey: z.string().describe("OpenWeather API Key"),
+      settings: z.object({
+        showLog: z.boolean().default(true).describe("Show Console Logs"),
+        refreshInterval: z.number().min(1).max(60).default(5).describe("Refresh Interval (min)"),
+      }).describe("Basic Settings"),
+      appearance: z.object({
+        theme: z.enum(["light", "dark", "auto"]).default("auto").describe("Interface Theme"),
+        accentColor: z.string().describe("Accent Color (HEX)"),
+      }).describe("Appearance"),
+      advanced: z.object({
+        endpoints: z.array(z.string()).describe("Custom API Endpoints"),
+        lastCheck: z.date().optional().describe("Last Security Check"),
+        threshold: z.number().default(0.5).describe("Confidence Threshold"),
+      }).describe("Advanced Config"),
+      notifications: z.array(z.object({
+        type: z.enum(["email", "push", "sms"]),
+        target: z.string(),
+      })).describe("Notification Channels"),
     })
   },
   setup() {

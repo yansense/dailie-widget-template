@@ -63,8 +63,8 @@ export default defineConfig({
       //   This is the recommended approach for widgets used within the dailie platform
       external:
         process.env.BUNDLE_SDK === "true"
-          ? ["react", "react-dom", "react/jsx-runtime"] // SDK NOT in external = bundled
-          : ["react", "react-dom", "react/jsx-runtime", "dailie-widget-sdk"], // SDK in external = not bundled
+          ? ["react", "react-dom", "react/jsx-runtime", "zod"] // SDK NOT in external = bundled
+          : ["react", "react-dom", "react/jsx-runtime", "dailie-widget-sdk", "zod"], // SDK in external = not bundled
       output: {
         entryFileNames: "[name].js",
         globals: {
@@ -72,6 +72,7 @@ export default defineConfig({
           "react-dom": "ReactDOM",
           "react/jsx-runtime": "ReactJSX",
           "dailie-widget-sdk": "DailieWidgetSDK",
+          zod: "Zod",
         },
       },
     },
