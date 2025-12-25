@@ -5,8 +5,8 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "dev": "mkdir -p dist && concurrently \"pnpm:watch\" \"pnpm:preview\"",
-    "build": "node scripts/build.js \"$npm_config_component\"",
+    "dev": "mkdir -p dist && concurrently \"NODE_ENV=production pnpm run watch\" \"pnpm run preview\"",
+    "build": "NODE_ENV=production node scripts/build.js \"$npm_config_component\"",
     "watch": "node scripts/watch.js",
     "preview": "vite preview",
     "lint": "biome lint",
