@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { ConsoleControls } from "./components/ConsoleControls";
 import { CrashControls } from "./components/CrashControls";
 import { ConfigDisplay } from "./components/ConfigDisplay";
+import { IOControls } from "./components/IOControls";
 
 interface DebugConfig {
   general: {
@@ -68,6 +69,8 @@ export function SandboxDebugView({ widgetStyle = 'classic' }: SandboxDebugViewPr
         <ConsoleControls />
 
         <CrashControls />
+
+        <IOControls />
 
         <ConfigDisplay config={config} />
 

@@ -21,5 +21,16 @@ export const WIDGET_CONFIG = {
       })).describe("通知规则"),
       lastMaintenance: z.date().optional().describe("上次维护时间"),
     }).optional().describe("高级选项"),
-  })
+  }),
+};
+
+export const IO_SCHEMA = {
+  input: z.object({
+    message: z.string().optional().describe("Input message from host"),
+    count: z.number().optional().describe("Input count from host"),
+  }),
+  output: z.object({
+    status: z.string().describe("Status sent to host"),
+    data: z.any().optional().describe("Data sent to host"),
+  }),
 };

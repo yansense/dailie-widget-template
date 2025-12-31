@@ -10,6 +10,7 @@ export default defineWidget({
   meta: {
     title: "Weather Card",
     description: "A simple weather widget",
+    keywords: ["weather", "forecast", "card"],
   },
   config: WIDGET_CONFIG,
   setup() {

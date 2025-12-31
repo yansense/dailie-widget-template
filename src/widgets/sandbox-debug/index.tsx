@@ -1,5 +1,5 @@
 import { defineWidget, useWidgetContext } from "dailie-widget-sdk";
-import { WIDGET_CONFIG } from "./config";
+import { WIDGET_CONFIG, IO_SCHEMA } from "./config";
 import { SandboxDebugView } from "./view";
 
 export default defineWidget({
@@ -10,6 +10,7 @@ export default defineWidget({
     description: "用于测试 Sandbox 的日志拦截和崩溃捕获能力",
   },
   config: WIDGET_CONFIG,
+  io: IO_SCHEMA,
   setup() {
     return () => {
       const { context } = useWidgetContext();
